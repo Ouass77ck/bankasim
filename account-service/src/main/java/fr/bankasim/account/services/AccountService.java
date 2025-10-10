@@ -1,22 +1,67 @@
-package main.java.fr.bankasim.account.services;
+package fr.bankasim.account.services;
 
-import main.java.fr.bankasim.account.dto.AccountDTO;
-import main.java.fr.bankasim.account.dto.TransferRequest;
-import main.java.fr.bankasim.account.model.Account;
-import main.java.fr.bankasim.account.repository.AccountRepository;
+import fr.bankasim.account.dto.AccountDTO;
+import fr.bankasim.account.dto.RegisterRequest;
+import fr.bankasim.account.dto.TransferRequest;
+import fr.bankasim.account.model.Account;
+import fr.bankasim.account.model.Role;
+import fr.bankasim.account.repository.AccountRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+
+    public Account Register(RegisterRequest request){
+        if (accountRepository.existsByEmail(request.getEmail())){
+            throw new IllegalArgumentException("Email déjà utilisé !");
+        }
+        Account account = new Account();
+        account.setEmail(request.getEmail());
+        account.setNom(request.getNom());
+        account.setPrenom(request.getPrenom());
+        account.setPassword(passwordEncoder.encode(request.getPassword()));
+        account.setSolde(BigDecimal.ZERO);
+        account.setRole(Role.CLIENT);
+        account.setPlafondTransaction(BigDecimal.valueOf(1000));
+        account.setDecouvertAutorise(BigDecimal.valueOf(1000));
+        account.setRib(generateRib(request.getEmail()));
+
+        return accountRepository.save(account);
+    }
+
+    private String generateRib(String email) {
+        StringBuilder str = new StringBuilder();
+        Random random = new Random();
+
+        for (char c : email.toLowerCase().toCharArray()) {
+            if (Character.isLetter(c)) {
+                // a=1, b=2, ..., z=26
+                int value = c - 'a' + 1;
+                str.append(value);
+            } else if (Character.isDigit(c)) {
+                str.append(c);
+            } else {
+                str.append(random.nextInt(10));
+            }
+        }
+
+        String rib = "FR" + str.toString();
+        return rib;
+    }
 
     public List<AccountDTO> getAllAccounts() {
         return accountRepository.findAll().stream()
@@ -51,6 +96,28 @@ public class AccountService {
         accountRepository.save(receiver);
     }
 
+    public Account setPlafond(BigDecimal newPlaf, UUID id){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Compte introuvable"));
+        
+        account.setPlafondTransaction(newPlaf);
+        return accountRepository.save(account);
+    }
+    public Account setDecouvert(BigDecimal newDec, UUID id){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Compte introuvable"));
+        
+        account.setDecouvertAutorise(newDec);
+        return accountRepository.save(account);
+    }
+    public Account setSolde(BigDecimal moula, UUID id){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Compte introuvable"));
+        BigDecimal newSolde = moula.add(account.getSolde());
+        account.setSolde(newSolde);
+        return accountRepository.save(account);
+    }
+    
     private AccountDTO toDTO(Account a) {
         return AccountDTO.builder()
                 .userId(a.getUserId())

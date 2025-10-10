@@ -1,4 +1,4 @@
-package main.java.fr.bankasim.account.dto;
+package fr.bankasim.account.dto;
 
 import lombok.*;
 

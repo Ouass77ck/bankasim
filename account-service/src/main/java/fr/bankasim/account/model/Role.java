@@ -1,4 +1,4 @@
-package main.java.fr.bankasim.account.model;
+package fr.bankasim.account.model;
 
 public enum Role {
     CLIENT,

@@ -1,4 +1,4 @@
-package main.java.fr.bankasim.account.model;
+package fr.bankasim.account.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,7 +6,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import main.java.fr.bankasim.account.model.Role;
+import fr.bankasim.account.model.Role;
 
 @Entity
 @Table(name = "accounts")

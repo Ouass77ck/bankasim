@@ -9,13 +9,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AccountDTO {
-    private UUID userId;
+public class RegisterRequest {
     private String nom;
     private String prenom;
     private String email;
-    private String rib;
-    private BigDecimal solde;
-    private BigDecimal decouvertAutorise;
-    private BigDecimal plafondTransaction;
+    private String password;
 }
