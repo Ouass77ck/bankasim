@@ -7,6 +7,8 @@ import fr.bankasim.account.model.Account;
 import fr.bankasim.account.model.Role;
 import fr.bankasim.account.repository.AccountRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import fr.bankasim.account.client.TransactionClient;
+import fr.bankasim.account.dto.TransactionDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final TransactionClient transactionClient;
 
 
     public Account Register(RegisterRequest request){
@@ -82,19 +85,42 @@ public class AccountService {
         Account receiver = accountRepository.findByRib(request.getRibDestinataire())
                 .orElseThrow(() -> new RuntimeException("Destinataire introuvable"));
 
-        if (request.getMontant().compareTo(sender.getPlafondTransaction()) > 0)
-            throw new RuntimeException("Montant dépasse le plafond autorisé");
+        TransactionDTO transaction = TransactionDTO.builder()
+                .idEnvoyeur(sender.getUserId())
+                .ribDestinataire(receiver.getRib())
+                .montant(request.getMontant())
+                .description("Virement de " + sender.getNom() + " vers " + receiver.getNom())
+                .build();
 
-        BigDecimal nouveauSolde = sender.getSolde().subtract(request.getMontant());
-        if (nouveauSolde.compareTo(sender.getDecouvertAutorise().negate()) < 0)
-            throw new RuntimeException("Découvert dépassé");
+        TransactionDTO createdTransaction;
+        try {
+            createdTransaction = transactionClient.createTransaction(transaction);
+        } catch (Exception e) {
+            throw new RuntimeException("Impossible de créer la transaction dans le service distant", e);
+        }
 
-        sender.setSolde(nouveauSolde);
-        receiver.setSolde(receiver.getSolde().add(request.getMontant()));
+        try {
+            if (request.getMontant().compareTo(sender.getPlafondTransaction()) > 0)
+                throw new RuntimeException("Montant dépasse le plafond autorisé");
 
-        accountRepository.save(sender);
-        accountRepository.save(receiver);
+            BigDecimal nouveauSolde = sender.getSolde().subtract(request.getMontant());
+            if (nouveauSolde.compareTo(sender.getDecouvertAutorise().negate()) < 0)
+                throw new RuntimeException("Découvert dépassé");
+
+            sender.setSolde(nouveauSolde);
+            receiver.setSolde(receiver.getSolde().add(request.getMontant()));
+
+            accountRepository.save(sender);
+            accountRepository.save(receiver);
+
+            transactionClient.validateTransaction(createdTransaction.getTransactionId());
+
+        } catch (Exception e) {
+            transactionClient.refuseTransaction(createdTransaction.getTransactionId());
+            throw new RuntimeException("Erreur pendant le transfert : " + e.getMessage(), e);
+        }
     }
+
 
     public Account setPlafond(BigDecimal newPlaf, UUID id){
         Account account = accountRepository.findById(id)
