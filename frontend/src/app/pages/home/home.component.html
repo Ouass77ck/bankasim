@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">Mon espace bancaire</mat-toolbar>
+
+<div class="container">
+  <mat-card>
+    <h2>Résumé du compte</h2>
+    <p><strong>Solde :</strong> {{ account?.solde | currency:'EUR' }}</p>
+    <p><strong>Plafond :</strong> {{ account?.plafondTransaction | currency:'EUR' }}</p>
+    <p><strong>Découvert autorisé :</strong> {{ account?.decouvertAutorise | currency:'EUR' }}</p>
+  </mat-card>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" routerLink="/createtransaction">Faire un virement</button>
+    <button mat-raised-button color="accent" routerLink="/mestransactions">Voir mes transactions</button>
+  </div>
+</div>

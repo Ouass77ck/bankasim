@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">Nouveau virement</mat-toolbar>
+
+<mat-card>
+  <form (ngSubmit)="createTransaction()">
+    <mat-form-field appearance="fill">
+      <mat-label>RIB Destinataire</mat-label>
+      <input matInput [(ngModel)]="ribDestinataire" name="ribDestinataire" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Montant (€)</mat-label>
+      <input matInput type="number" [(ngModel)]="montant" name="montant" required>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Envoyer</button>
+  </form>
+</mat-card>
