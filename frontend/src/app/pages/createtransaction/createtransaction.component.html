@@ -1,17 +1,40 @@
-<mat-toolbar color="primary">Nouveau virement</mat-toolbar>
+<mat-toolbar class="navbar"> 
+  <div class="nav-left">
+    <img src="logo-bankasim2.png" alt="Bankasim" class="logo" />
+  </div>
 
-<mat-card>
-  <form (ngSubmit)="createTransaction()">
-    <mat-form-field appearance="fill">
-      <mat-label>RIB Destinataire</mat-label>
-      <input matInput [(ngModel)]="ribDestinataire" name="ribDestinataire" required>
-    </mat-form-field>
+  <div class="nav-center">
+    <button mat-button routerLink="/home">home</button>
+    <button mat-button routerLink="/createtransaction">faire un virement</button>
+    <button mat-button routerLink="/mestransactions">mes transactions</button>
+  </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Montant (€)</mat-label>
-      <input matInput type="number" [(ngModel)]="montant" name="montant" required>
-    </mat-form-field>
+  <div class="nav-right">
+    <button mat-button [matMenuTriggerFor]="menu">{{ account?.prenom }}</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()" routerLink="/login">Se déconnecter</button>
+    </mat-menu>
+  </div>
+</mat-toolbar>
 
-    <button mat-raised-button color="primary" type="submit">Envoyer</button>
-  </form>
-</mat-card>
+<div class="main-container">
+  <h1>Faire un virement</h1>
+
+  <mat-card class="transfer-card">
+    <form (ngSubmit)="createTransaction()" class="transfer-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>RIB Destinataire</mat-label>
+        <input matInput [(ngModel)]="ribDestinataire" name="ribDestinataire" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Montant (€)</mat-label>
+        <input matInput type="number" [(ngModel)]="montant" name="montant" required>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" class="submit-btn">
+        Envoyer le virement
+      </button>
+    </form>
+  </mat-card>
+</div>

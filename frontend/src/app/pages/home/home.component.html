@@ -1,15 +1,38 @@
-<mat-toolbar color="primary">Mon espace bancaire</mat-toolbar>
+<mat-toolbar class="navbar">
+  <div class="nav-left">
+    <img src="logo-bankasim2.png" alt="Bankasim" class="logo" />
+  </div>
 
-<div class="container">
-  <mat-card>
-    <h2>Résumé du compte</h2>
-    <p><strong>Solde :</strong> {{ account?.solde | currency:'EUR' }}</p>
-    <p><strong>Plafond :</strong> {{ account?.plafondTransaction | currency:'EUR' }}</p>
-    <p><strong>Découvert autorisé :</strong> {{ account?.decouvertAutorise | currency:'EUR' }}</p>
-  </mat-card>
+  <div class="nav-center">
+    <button mat-button routerLink="/home">home</button>
+    <button mat-button routerLink="/createtransaction">faire un virement</button>
+    <button mat-button routerLink="/mestransactions">mes transactions</button>
+  </div>
 
-  <div class="actions">
-    <button mat-raised-button color="primary" routerLink="/createtransaction">Faire un virement</button>
-    <button mat-raised-button color="accent" routerLink="/mestransactions">Voir mes transactions</button>
+  <div class="nav-right">
+    <button mat-button [matMenuTriggerFor]="menu">{{ account?.prenom }}</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()" routerLink="/login">Se déconnecter</button>
+    </mat-menu>
+  </div>
+</mat-toolbar>
+
+<div class="home-container">
+  <h2 class="solde-label">Solde:</h2>
+  <h1 class="solde">{{ account?.solde | number:'1.2-2' }}€</h1>
+
+  <div class="account-info">
+    <div>
+      <p class="info-label">Plafond par transaction:</p>
+      <p class="info-value">{{ account?.plafondTransaction | currency:'EUR' }}</p>
+    </div>
+    <div>
+      <p class="info-label">Rib:</p>
+      <p class="info-value">{{ account?.rib }}</p>
+    </div>
+    <div>
+      <p class="info-label">Découvert max:</p>
+      <p class="info-value">{{ account?.decouvertAutorise | currency:'EUR' }}</p>
+    </div>
   </div>
 </div>

@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
+
+:host {
+  font-family: 'Ubuntu Mono', monospace;
+  background-color: #0e0613;
+  color: rgb(227, 227, 227);
+  display: block;
+  min-height: 100vh;
+}
+
+.navbar {
+  background-color: #0e0613;
+  color: rgb(227, 227, 227);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+  border-bottom: 1px solid #2c0d4f;
+
+  .logo {
+    width: 200px;
+    margin-right: 8px;
+  }
+
+  .brand {
+    font-weight: bold;
+    color: #c5b783;
+    font-size: 1.2rem;
+  }
+
+  button {
+    color: #d4d4aa;
+    text-transform: lowercase;
+    font-size: 0.95rem;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  .nav-left,
+  .nav-center,
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+.home-container {
+  text-align: center;
+  padding: 5rem 2rem;
+
+  .solde-label {
+    font-size: 1.5rem;
+    color: #8b5cf6;
+    margin-bottom: 0.5rem;
+  }
+
+  .solde {
+    font-size: 4rem;
+    font-weight: bold;
+  }
+
+  .account-info {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+    text-align: left;
+
+    .info-label {
+      color: #8b5cf6;
+      font-size: 1rem;
+    }
+
+    .info-value {
+      font-size: 1.2rem;
+      color: rgb(227, 227, 227);
+    }
+  }
+}

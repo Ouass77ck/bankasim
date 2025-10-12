@@ -8,6 +8,8 @@ import fr.bankasim.account.services.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+import java.util.HashMap;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,10 +39,13 @@ public class AccountController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<String> transfer(@RequestBody TransferRequest request) {
+    public ResponseEntity<Map<String, String>> transfer(@RequestBody TransferRequest request) {
         accountService.transfer(request);
-        return ResponseEntity.ok("Transfert effectué avec succès");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Transfert effectué avec succès");
+        return ResponseEntity.ok(response);
     }
+
 
     @PutMapping("/plafond/{id}")
     public ResponseEntity<String> setPlafond(@RequestBody BigDecimal newPlafond, @PathVariable UUID id){

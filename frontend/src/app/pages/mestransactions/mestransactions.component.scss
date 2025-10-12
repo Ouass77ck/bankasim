@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
+
+:host {
+  font-family: 'Ubuntu Mono', monospace;
+  background-color: #0e0613;
+  color: rgb(227, 227, 227);
+  display: block;
+  min-height: 100vh;
+  padding-bottom: 3rem;
+}
+
+/* --- Navbar (identique à /home) --- */
+.navbar {
+  background-color: #0e0613;
+  color: rgb(227, 227, 227);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+  border-bottom: 1px solid #2c0d4f;
+
+  .logo {
+    width: 200px;
+  }
+
+  button {
+    color: #d4d4aa;
+    text-transform: lowercase;
+    font-size: 0.95rem;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  .nav-left,
+  .nav-center,
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+/* --- Conteneur principal --- */
+.transactions-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+
+  h1 {
+    color: #c5b783;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* --- Carte du tableau --- */
+.transactions-card {
+  background-color: #16081f;
+  border: 1px solid #2c0d4f;
+  border-radius: 16px;
+  padding: 2rem 3rem;
+  width: 80%;
+  max-width: 900px;
+  box-shadow: 0 0 20px rgba(97, 42, 139, 0.3);
+  overflow-x: auto;
+}
+
+/* --- Tableau stylé --- */
+.transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    color: #c3af67;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid #2c0d4f;
+    padding: 1rem;
+    text-align: left;
+  }
+
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid #26123a;
+    font-size: 0.95rem;
+  }
+
+  tr:hover {
+    background-color: rgba(77, 26, 130, 0.2);
+  }
+
+  /* Statuts colorés */
+  .succès, .success {
+    color: #7fff7f;
+  }
+
+  .échec, .failed {
+    color: #ff6b6b;
+  }
+
+  .en\ cours, .pending {
+    color: #d4d4aa;
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 700px) {
+  .transactions-card {
+    padding: 1rem;
+    width: 95%;
+  }
+
+  th, td {
+    font-size: 0.85rem;
+  }
+}
