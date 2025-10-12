@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { MaterialModule } from '../../shared/material.module';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
@@ -8,12 +8,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-mestransactions',
   standalone: true,
-  imports: [CommonModule, MaterialModule, MatMenuModule, MatButtonModule, MatToolbarModule, RouterLink],
+  imports: [CommonModule, MaterialModule, MatMenuModule, MatButtonModule, MatToolbarModule, RouterLink, MatIconModule],
   templateUrl: './mestransactions.component.html',
   styleUrls: ['./mestransactions.component.scss']
 })

@@ -117,3 +117,27 @@
     font-size: 0.85rem;
   }
 }
+
+/* Flèches montant */
+.montant-positif {
+  color: #6fff94; /* vert doux */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.montant-négatif {
+  color: #ff6b6b; /* rouge */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Flèches */
+.arrow-up {
+  color: #6fff94;
+}
+
+.arrow-down {
+  color: #ff6b6b;
+}
